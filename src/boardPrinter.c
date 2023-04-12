@@ -4,6 +4,7 @@
 #include <unistd.h>
 
 #define NUMBER_OF_STATES 13
+#define BACKGROUNDCOL "\x1B[101m"
 
 const char *str[NUMBER_OF_STATES] = {
     "  ",
@@ -29,7 +30,11 @@ void printBoard(bool player, int board[8][8])
             printf("%d ", y + 1);
             for (int x = 0; x < 8; x++)
             {
+                if ((x + y) % 2)
+                    printf(BACKGROUNDCOL);
                 printf("%s", str[board[y][x]]);
+
+                printf("\x1B[0m");
             }
             printf("\n");
         }
@@ -41,7 +46,11 @@ void printBoard(bool player, int board[8][8])
             printf("%d ", y + 1);
             for (int x = 0; x < 8; x++)
             {
+                if ((x + y) % 2)
+                    printf(BACKGROUNDCOL);
                 printf("%s", str[board[y][x]]);
+
+                printf("\x1B[0m");
             }
             printf("\n");
         }
