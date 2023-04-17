@@ -4,7 +4,17 @@
 #include <unistd.h>
 
 #define NUMBER_OF_STATES 13
-#define BACKGROUNDCOL "\x1B[101m"
+
+#define REDBACK "\x1B[101m"
+#define GREENBACK "\x1B[102m"
+#define YELLOWBACK "\x1B[103m"
+#define BLUEBACK "\x1B[104m"
+#define MAGBACK "\x1B[105m"
+#define CYANBACK "\x1B[106m"
+
+#define BACKGROUNDCOL YELLOWBACK
+
+void clearScrn();
 
 const char *str[NUMBER_OF_STATES] = {
     "  ",
@@ -23,6 +33,8 @@ const char *str[NUMBER_OF_STATES] = {
 
 void printBoard(bool player, int board[8][8])
 {
+    clearScrn();
+
     if (player == 1)
     {
         for (int y = 0; y < 8; y++)
@@ -70,10 +82,6 @@ void clearScrn()
     printf("\033[1;1H");
 }
 
-void playAnimation()
-{
-}
-
 void enableCursorBlinking()
 {
     printf("\033[?25h");
@@ -84,26 +92,38 @@ void disableCursorBlinking()
     printf("\033[?25l");
 }
 
-int getMove()
+void getMoves(char *xS, char *yS, char *xE, char *yE)
 {
-    int move = -1;
 
-    printf("Select the move you want to do: ");
+    printf("Your move: ");
+
     enableCursorBlinking();
 
-    scanf("%d", &move);
-    move--;
+    char curr = '?';
 
-    disableCursorBlinking();
-    return move;
-}
+    do
+    {
+        curr = getchar();
+    } while (curr < 'A' || curr > 'I');
+    *xS = curr;
 
-void getStartingPoint(char *xC, char *yC)
-{
-    printf("Select the piece you want to move[A1, F6... ?]: ");
+    do
+    {
+        curr = getchar();
+    } while (curr < '1' || curr >= '9');
+    *yS = curr;
 
-    enableCursorBlinking();
-    scanf(" %c%c", xC, yC);
+    do
+    {
+        curr = getchar();
+    } while (curr < 'A' || curr > 'I');
+    *xE = curr;
+
+    do
+    {
+        curr = getchar();
+    } while (curr < '1' || curr >= '9');
+    *yE = curr;
 
     disableCursorBlinking();
 }

@@ -3,8 +3,12 @@
 #include <time.h>
 
 // Function to write evidence to a file
-void write_moves(char *string)
+void write_moves(char xS, char yS, char xE, char yE)
 {
+    char string[8];
+
+    sprintf(string, "%c%c%c%c", xS, yS, xE, yE);
+
     FILE *fp;
     time_t current_time;
     char *c_time_string;
