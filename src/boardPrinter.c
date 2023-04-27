@@ -2,8 +2,16 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <unistd.h>
+#include <string.h>
 
 #define NUMBER_OF_STATES 13
+
+#define HORISONTAL_LINE "\u2500"
+#define VERTICAL_LINE "\u2502"
+#define TOP_LEFT_CORNER "\u250c"
+#define TOP_RIGTH_CORNER "\u2510"
+#define BOTTOM_LEFT_CORNER "\u2514"
+#define BOTTOM_RIGTH_CORNER "\u2518"
 
 #define REDBACK "\x1B[101m"
 #define GREENBACK "\x1B[102m"
@@ -11,6 +19,8 @@
 #define BLUEBACK "\x1B[104m"
 #define MAGBACK "\x1B[105m"
 #define CYANBACK "\x1B[106m"
+
+#define NORMALBACK "\x1B[0m"
 
 #define BACKGROUNDCOL YELLOWBACK
 
@@ -128,28 +138,58 @@ void getMoves(char *xS, char *yS, char *xE, char *yE)
     disableCursorBlinking();
 }
 
-void printCheckScreen()
+void printScreen(char *str)
 {
     int timeU = 150000;
-    clearScrn();
-    printf("%s", "\n\n\n     C              \n\n\n\n");
-    usleep(timeU);
-    clearScrn();
-    printf("%s", "\n\n\n     CH             \n\n\n\n");
-    usleep(timeU);
-    clearScrn();
-    printf("%s", "\n\n\n     CHE            \n\n\n\n");
-    usleep(timeU);
-    clearScrn();
-    printf("%s", "\n\n\n     CHEC           \n\n\n\n");
-    usleep(timeU);
-    clearScrn();
-    printf("%s", "\n\n\n     CHECK          \n\n\n\n");
-    usleep(timeU);
-    clearScrn();
-    printf("%s", "\n\n\n     CHECK!         \n\n\n\n");
-    usleep(timeU);
-    clearScrn();
-    printf("%s", "\n\n\n     CHECK!!        \n\n\n\n");
+
+    for (int i = 1; i < strlen(str) + 2; i++)
+    {
+        clearScrn();
+        printf("\n\n\n\n      %.*s \n", i, str);
+        usleep(timeU);
+    }
+
     usleep(3 * timeU);
+}
+
+void Box()
+{
+    clearScrn();
+    char *arr[12][24];
+
+    for (int i = 0; i < 12; i++)
+    {
+        for (int j = 0; j < 24; j++)
+        {
+            arr[i][j] = " ";
+        }
+    }
+
+    arr[0][0] = TOP_LEFT_CORNER;
+    arr[0][23] = TOP_RIGTH_CORNER;
+    arr[11][0] = BOTTOM_LEFT_CORNER;
+    arr[11][23] = BOTTOM_RIGTH_CORNER;
+
+    for (int i = 1; i < 23; i++)
+    {
+        arr[0][i] = HORISONTAL_LINE;
+        arr[11][i] = HORISONTAL_LINE;
+    }
+
+    for (int i = 1; i < 11; i++)
+    {
+        arr[i][0] = VERTICAL_LINE;
+        arr[i][23] = VERTICAL_LINE;
+    }
+
+    for (int i = 0; i < 12; i++)
+    {
+        for (int j = 0; j < 24; j++)
+        {
+            printf("%s", arr[i][j] ? arr[i][j] : " ");
+        }
+        printf("\n");
+    }
+
+    sleep(5);
 }

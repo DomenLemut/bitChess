@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
-#include "boardPrinter.c"
-#include "util.c"
-#include "txtWriter.c"
+#include "includes.h"
 
 void init();
 void findMoves(int x, int y, int *num_moves, int **moves_arr);
@@ -140,7 +138,9 @@ int main()
 
 	disableCursorBlinking();
 
-	printCheckScreen();
+	Box();
+
+	printScreen("bitChess");
 
 	bool end = false;
 	while (!end)
@@ -321,12 +321,12 @@ void searchAndExecute(bool player)
 	int xs, ys, xe, ye;
 
 	// resizable array
-	// int *moves_arr = malloc(sizeof(int) * 2 * MAX_MOVES);
-	// if (moves_arr == NULL)
-	// {
-	// 	printf("Memory allocation failed\n");
-	// 	return;
-	// }
+	int *moves_arr = malloc(sizeof(int) * 2 * MAX_MOVES);
+	if (moves_arr == NULL)
+	{
+		printf("Memory allocation failed\n");
+		return;
+	}
 
 	int num_moves = 0;
 
@@ -361,23 +361,23 @@ void searchAndExecute(bool player)
 			continue;
 		}
 
-		// findMoves(ys, xs, &num_moves, &moves_arr);
+		findMoves(ys, xs, &num_moves, &moves_arr);
 
-		// bool foundIt = false;
-		// for (int i = 0; i < num_moves; i++)
-		// {
-		// 	if (moves_arr[2 * i + 1] == xe - xs && moves_arr[2 * i] == ye - ys)
-		// 	{
-		// 		foundIt = true;
-		// 		break;
-		// 	}
-		// }
+		bool foundIt = false;
+		for (int i = 0; i < num_moves; i++)
+		{
+			if (moves_arr[2 * i + 1] == xe - xs && moves_arr[2 * i] == ye - ys)
+			{
+				foundIt = true;
+				break;
+			}
+		}
 
-		// if (foundIt)
-		// 	break;
-
-		if (possibleMove(ys, xs, ye, xe))
+		if (foundIt)
 			break;
+
+		// if (possibleMove(ys, xs, ye, xe))
+		// 	break;
 
 		printf("Move not possible!\n");
 
