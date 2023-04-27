@@ -45,45 +45,90 @@ void printBoard(bool player, int board[8][8])
 {
     clearScrn();
 
-    if (player == 1)
+    int boxWidth = 36;
+    int boxHeight = 12;
+
+    int boxHeightCount = 0;
+
+    for (int y = 0; y < 12; y++)
     {
-        for (int y = 0; y < 8; y++)
+
+        if (y < 9 && y > 0)
         {
-            printf("%d ", y + 1);
-            for (int x = 0; x < 8; x++)
+            if (player)
             {
-                if ((x + y) % 2)
-                    printf(BACKGROUNDCOL);
-                printf("%s", str[board[y][x]]);
+                printf("%d ", y);
+                for (int x = 0; x < 8; x++)
+                {
+                    if ((x + y - 1) % 2)
+                        printf(BACKGROUNDCOL);
+                    printf("%s", str[board[y - 1][x]]);
 
-                printf("\x1B[0m");
+                    printf("\x1B[0m");
+                }
             }
-            printf("\n");
+            else
+            {
+                printf("%d ", y);
+                for (int x = 7; x >= 0; x--)
+                {
+                    if ((x + y - 1) % 2)
+                        printf(BACKGROUNDCOL);
+                    printf("%s", str[board[y - 1][x]]);
+
+                    printf("\x1B[0m");
+                }
+            }
         }
-    }
-    else
-    {
-        for (int y = 7; y >= 0; y--)
+
+        if (y > 9 || y < 1)
         {
-            printf("%d ", y + 1);
-            for (int x = 0; x < 8; x++)
-            {
-                if ((x + y) % 2)
-                    printf(BACKGROUNDCOL);
-                printf("%s", str[board[y][x]]);
-
-                printf("\x1B[0m");
-            }
-            printf("\n");
+            for (int i = 0; i < 18; i++)
+                printf(" ");
         }
-    }
+        else if (y == 9)
+        {
+            printf("  ");
+            for (int i = 0; i < 8; i++)
+                printf("%c ", 'A' + i);
+        }
 
-    printf("  ");
-    for (int i = 0; i < 8; i++)
-    {
-        printf("%c ", 'A' + i);
+        if (boxHeightCount < boxHeight)
+        {
+            for (int i = 0; i < 4; i++)
+                printf(" ");
+
+            if (boxHeightCount == 0)
+            {
+                printf("%s", TOP_LEFT_CORNER);
+                for (int i = 0; i < boxWidth - 2; i++)
+                    printf("%s", HORISONTAL_LINE);
+
+                printf("%s", TOP_RIGTH_CORNER);
+            }
+
+            else if (boxHeightCount == boxHeight - 1)
+            {
+                printf("%s", BOTTOM_LEFT_CORNER);
+                for (int i = 0; i < boxWidth - 2; i++)
+                    printf("%s", HORISONTAL_LINE);
+
+                printf("%s", BOTTOM_RIGTH_CORNER);
+            }
+            else
+            {
+                printf("%s", VERTICAL_LINE);
+                for (int i = 0; i < boxWidth - 2; i++)
+                    printf(" ");
+                printf("%s", VERTICAL_LINE);
+            }
+
+            boxHeightCount++;
+        }
+
+        printf("\n");
     }
-    printf("\n\n\n");
+    printf("\n");
 }
 
 void clearScrn()
