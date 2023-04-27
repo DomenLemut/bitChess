@@ -18,4 +18,6 @@ done
 
 cd ..
 
-gcc -o chess $MAIN_PROGRAM
+programs=$(find -name "*.c" ! -name "main.c" ! -name "try.c")
+
+gcc -o chess $programs $MAIN_PROGRAM

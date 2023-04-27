@@ -1,6 +1,8 @@
-#include <stdio.h>
-#include <stdlib.h>
+#ifndef MOVES_ARRAY_H
+#define MOVES_ARRAY_H
 
-void addToResizableArray(int currX, int currY, int *num_moves, int **moves_arr);
-int charToCordY(char c);
 int charToCordX(char c);
+int charToCordY(char c);
+void addToResizableArray(int currX, int currY, int *num_moves, int **moves_arr);
+
+#endif

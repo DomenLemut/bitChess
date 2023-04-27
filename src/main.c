@@ -49,6 +49,25 @@ typedef struct
 
 PieceMoves moves[NUMBER_OF_STATES];
 
+bool player = 0;
+
+int main()
+{
+	init();
+
+	disableCursorBlinking();
+
+	printScreen("bitChess");
+
+	bool end = false;
+	while (!end)
+	{
+		printBoard(player, board);
+		searchAndExecute(player);
+		player = !player;
+	}
+}
+
 void init()
 {
 
@@ -128,27 +147,6 @@ void init()
 	moves[10].scalable = true;
 	moves[11].scalable = false;
 	moves[12].scalable = false;
-}
-
-bool player = 0;
-
-int main()
-{
-	init();
-
-	disableCursorBlinking();
-
-	Box();
-
-	printScreen("bitChess");
-
-	bool end = false;
-	while (!end)
-	{
-		printBoard(player, board);
-		searchAndExecute(player);
-		player = !player;
-	}
 }
 
 void findMoves(int x, int y, int *num_moves, int **moves_arr)
