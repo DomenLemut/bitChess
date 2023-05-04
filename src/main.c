@@ -341,21 +341,21 @@ void searchAndExecute(bool player)
 		if ((xs < 0 || xs > 7 || ys < 0 || ys > 7) ||
 			(xe < 0 || xe > 7 || ye < 0 || ye > 7))
 		{
-			printf("Invalid entry\n");
+			Warning(1);
 			continue;
 		}
 
 		// empty space
 		if (board[ys][xs] == EMPTYSPACE)
 		{
-			printf("This is an empty space\n");
+			Warning(2);
 			continue;
 		}
 
 		// is it even my figure
 		if ((board[ys][xs] % 2) == player)
 		{
-			printf("This is not your figure\n");
+			Warning(3);
 			continue;
 		}
 

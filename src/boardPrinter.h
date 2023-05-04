@@ -21,4 +21,6 @@ extern void printScreen(char *str);
 
 extern void Box();
 
+extern void Warning(int warning);
+
 #endif /* CHESS_H */

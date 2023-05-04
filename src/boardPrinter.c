@@ -24,6 +24,17 @@
 
 #define BACKGROUNDCOL YELLOWBACK
 
+// printing spacing variables
+#define BOX_HEIGHT 12
+#define BOX_WIDTH 100
+
+#define BOARD_START_H 1
+#define BOARD_START_W 2
+#define BOARD_WIDTH 18
+#define BOARD_HEIGHT 18
+
+#define SEPARATION 4
+
 void clearScrn();
 
 const char *str[NUMBER_OF_STATES] = {
@@ -41,28 +52,64 @@ const char *str[NUMBER_OF_STATES] = {
     "\u265A ",
     "\u2654 "};
 
+typedef struct
+{
+    char *BUFFER[BOX_WIDTH];
+    int cntSimbols;
+    int cntChars;
+} Buffer;
+
+Buffer initBuffer()
+{
+    Buffer buffer;
+    buffer.cntChars, buffer.cntSimbols = 0;
+    return buffer;
+}
+
+void addToBuffer(Buffer *buffer, char *str)
+{
+    int len = strlen(str);
+    if (buffer->cntChars + len > BOX_WIDTH)
+    {
+        // The string doesn't fit into the buffer
+        return;
+    }
+    int i, j;
+    for (i = 0; i < len; i++)
+    {
+        // Add each character of the string to the buffer
+        buffer->BUFFER[buffer->cntSimbols] = malloc(sizeof(char));
+        *(buffer->BUFFER[buffer->cntSimbols]) = str[i];
+        buffer->cntSimbols++;
+    }
+    buffer->cntChars += len;
+}
+
 void printBoard(bool player, int board[8][8])
 {
     clearScrn();
+
+    Buffer buffer = initBuffer();
 
     int boxWidth = 36;
     int boxHeight = 12;
 
     int boxHeightCount = 0;
 
-    for (int y = 0; y < 12; y++)
+    for (int y = 0; y < BOX_HEIGHT; y++)
     {
 
         if (y < 9 && y > 0)
         {
-            if (player)
+            int bY = y - 1;
+            if (!player)
             {
                 printf("%d ", y);
                 for (int x = 0; x < 8; x++)
                 {
-                    if ((x + y - 1) % 2)
+                    if ((x + bY) % 2)
                         printf(BACKGROUNDCOL);
-                    printf("%s", str[board[y - 1][x]]);
+                    printf("%s", str[board[bY][x]]);
 
                     printf("\x1B[0m");
                 }
@@ -72,9 +119,9 @@ void printBoard(bool player, int board[8][8])
                 printf("%d ", y);
                 for (int x = 7; x >= 0; x--)
                 {
-                    if ((x + y - 1) % 2)
+                    if ((x + bY) % 2)
                         printf(BACKGROUNDCOL);
-                    printf("%s", str[board[y - 1][x]]);
+                    printf("%s", str[board[bY][x]]);
 
                     printf("\x1B[0m");
                 }
@@ -131,10 +178,32 @@ void printBoard(bool player, int board[8][8])
     printf("\n");
 }
 
+void printBuffer(Buffer *buffer)
+{
+}
+
 void clearScrn()
 {
     printf("\033[2J");
     printf("\033[1;1H");
+}
+
+void Warning(int warning)
+{
+    switch (warning)
+    {
+    case 1:
+        printf("Invalid entry\n");
+        break;
+    case 2:
+        printf("This is an empty space\n");
+        break;
+    case 3:
+        printf("This is not your figure\n");
+        break;
+    default:
+        printf("invalid warn");
+    }
 }
 
 void enableCursorBlinking()
